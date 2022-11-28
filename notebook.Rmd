@@ -1,0 +1,24 @@
+---
+title: "Breast cancer survival"
+output: html_notebook
+---
+
+```{r}
+path <- dirname(rstudioapi::getActiveDocumentContext()$path)
+setwd(path)
+```
+```{r}
+breast_cancer <- readRDS("metabric-analytical.rds")
+head(breast_cancer)
+```
+
+I want to assess what the different cancer types are
+```{r}
+unique(breast_cancer$cancer_type)
+sum(is.na(breast_cancer$cancer_type == "NA"))
+```
+I want to assess whether there are any cancers with 
+```{r}
+sum(breast_cancer$tumor_stage == 0)
+```
+
