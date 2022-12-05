@@ -19,6 +19,15 @@ sum(is.na(breast_cancer$cancer_type == "NA"))
 ```
 I want to assess whether there are any cancers with 
 ```{r}
-sum(breast_cancer$tumor_stage == 0)
+sum(breast_cancer$tumor_stage == 0, na.rm=TRUE)
+```
+
+# Aim 2: How does molecular signature influence survival
+```{r}
+breast_cancer <- breast_cancer %>%
+  mutate(
+    overall_status = ifelse(vital_status == "died of disease", "dead", "censored")
+  ) %>%
+  drop_na(overall_status)
 ```
 
