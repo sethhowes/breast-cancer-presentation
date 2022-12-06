@@ -31,3 +31,95 @@ breast_cancer <- breast_cancer %>%
   drop_na(overall_status)
 ```
 
+# Is cellularity an important prognostic indicator for survival 
+log rank test for each exposures 
+```{r}
+survdiff(Surv(surv_months, status) ~ grade, data = breast_cancer)
+```
+
+```{r}
+survdiff(Surv(surv_months, status) ~ tumor_size, data = breast_cancer)
+```
+
+```{r}
+survdiff(Surv(surv_months, status) ~ cellularity, data = breast_cancer)
+```
+
+```{r}
+survdiff(Surv(surv_months, status) ~ tumor_stage, data = breast_cancer)
+```
+
+
+Kaplan Meier plot w/o the censored data vertical thingy
+```{r}
+survfit2(Surv(surv_months, status) ~ tumor_stage, data = breast_cancer) %>%
+  ggsurvfit() + 
+  labs(
+    x = "Months",
+    y = "Survival probability"
+  )
+```
+
+```{r}
+survfit2(Surv(surv_months, status) ~ tumor_size, data = breast_cancer) %>%
+  ggsurvfit() + 
+  labs(
+    x = "Months",
+    y = "Survival probability"
+  )
+```
+
+```{r}
+survfit2(Surv(surv_months, status) ~ grade, data = breast_cancer) %>%
+  ggsurvfit() + 
+  labs(
+    x = "Months",
+    y = "Survival probability"
+  )
+```
+
+```{r}
+survfit2(Surv(surv_months, status) ~ cellularity, data = breast_cancer) %>%
+  ggsurvfit() + 
+  labs(
+    x = "Months",
+    y = "Survival probability"
+  )
+```
+
+
+Kaplan Meier plot with the censored data
+I think need to install survminer?
+```{r}
+install.packages("survminer")
+```
+
+```{r}
+surv_size_fit = survfit(
+  survival::Surv(surv_months, status) ~ tumor_size,
+  data=breast_cancer)
+survminer::ggsurvplot(surv_size_fit, risk.table = TRUE)
+```
+
+```{r}
+surv_stage_fit = survfit(
+  survival::Surv(surv_months, status) ~ tumor_stage,
+  data=breast_cancer)
+survminer::ggsurvplot(surv_stage_fit, risk.table = TRUE)
+```
+
+```{r}
+surv_grade_fit = survfit(
+  survival::Surv(surv_months, status) ~ grade,
+  data=breast_cancer)
+survminer::ggsurvplot(surv_grade_fit, risk.table = TRUE)
+```
+
+```{r}
+surv_cell_fit = survfit(
+  survival::Surv(surv_months, status) ~ cellularity,
+  data=breast_cancer)
+survminer::ggsurvplot(surv_cell_fit, risk.table = TRUE)
+```
+
+
